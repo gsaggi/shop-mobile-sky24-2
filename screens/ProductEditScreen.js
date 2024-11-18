@@ -66,40 +66,42 @@ export default function ProductEditScreen(props) {
     props.navigation.navigate("ShopView");
   }
 
-    async function handleSubmit() {
-      try {
-        if (id === -1) {
-          await addProduct(product);
-        } else {
-          await updateProduct(id, product);
-        }
-        props.navigation.goBack();
-      } catch (err) {
-        console.error(err);
-        setError("Failed to save data.");
+  async function handleSubmit() {
+    try {
+      if (id === -1) {
+        await addProduct(product);
+      } else {
+        await updateProduct(id, product);
       }
-  };
-  
-    async function handleSubmitTest() {
-      try {
-        if (id === -1) {
-          await addProduct({
-            id: 1,
-            name: "Apple",
-            price: 0.5,
-            stock: 100,
-            description: "Fresh red apple",
-            categoryId: 1,
-          });
-        } else {
-          await updateProduct(id, { ...product, name: product.name + " Updated" });
-        }
-        props.navigation.goBack();
-      } catch (err) {
-        console.error(err);
-        setError("Failed to save data.");
-      }
+      props.navigation.goBack();
+    } catch (err) {
+      console.error(err);
+      setError("Failed to save data.");
     }
+  }
+
+  async function handleSubmitTest() {
+    try {
+      if (id === -1) {
+        await addProduct({
+          name: "banana",
+          price: 0.3,
+          stock: 150,
+          description: "Fresh Yellow banana",
+          categoryId: 1,
+        });
+      } else {
+        await updateProduct(id, {
+          ...product,
+          name: product.name + " Updated",
+        });
+      }
+      props.navigation.goBack();
+    } catch (err) {
+      console.error(err);
+      setError("Failed to save data.");
+    }
+  }
 
   return (
     <Surface
