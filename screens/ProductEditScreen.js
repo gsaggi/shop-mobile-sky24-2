@@ -26,7 +26,12 @@ import {
 // import { TouchableOpacity } from "react-native-gesture-handler";
 import { useIsFocused } from "@react-navigation/native";
 import { Dropdown } from "react-native-paper-dropdown";
+import { fetchProductById, addProduct, updateProduct } from "../utils/api";
 
+export default function ProductEditScreen(props) {
+
+  const { id } = props.route.params;
+  
 const [product, setProduct] = useState({
   id: 0,
   name: "",
@@ -37,10 +42,9 @@ const [product, setProduct] = useState({
 });
 
 const [offline, setOffline] = useState(false);
-const [error, setError] = useState(null);
-
-export default function ProductEditScreen(props) {
   const [error, setError] = useState(null);
+  
+  //const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,8 +118,15 @@ export default function ProductEditScreen(props) {
       <Text>{product?.stock}</Text>
       <Text>{product?.description}</Text>
       <Text>{product?.categoryId}</Text>
-      <Button mode="contained" icon="update" onPress={() => handeleDelete(9)}>
-        Delete product
+      
+      <Button
+        mode="contained"
+        icon="update"
+        onPress={() => {
+          handleSubmitTest();
+        }}
+      >
+        Save or Add
       </Button>
     </Surface>
   );
