@@ -1,22 +1,70 @@
-import React from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native'
-
+import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Card,
+  IconButton,
+  FAB,
+  Snackbar,
+  TextInput,
+  Dialog,
+  Portal,
+  Button,
+  Text,
+  Surface,
+  Divider,
+  Searchbar,
+  useTheme,
+} from "react-native-paper";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
+// import { TouchableOpacity } from "react-native-gesture-handler";
+import { useIsFocused } from "@react-navigation/native";
+import { Dropdown } from "react-native-paper-dropdown";
+import { fetchProductById } from "../utils/api";
 export default function ProductViewScreen(props) {
-  return (
-    <View style={styles.container}>
-      <Text  style={styles.text}>ProductViewScreen</Text>
-    </View>
-  )
-}
+  const { id } = props.route.params;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 18,
-    marginBottom: 20,
-  },
-});
+  const [product, setProduct] = useState(null);
+  const [offline, setOffline] = useState(false);
+  const [error, setError] = useState(null);
+
+  // #region Name
+  function showShopView() {
+    props.navigation.navigate("ShopView");
+  }
+  // #endregion
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchProductById(id);
+        setProduct(data);
+        console.log(data);
+      } catch (err) {
+        console.error(err);
+        setOffline(true);
+        setError("Unable to fetch data, offline mode");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <Surface
+      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+    >
+      <Text variant="displaySmall">ProductViewScreen</Text>
+      <Text>{id}</Text>
+      <Button mode="contained" icon="update" onPress={() => showShopView()}>
+        Go Back
+      </Button>
+    </Surface>
+  );
+}
